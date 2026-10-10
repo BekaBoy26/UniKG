@@ -40,6 +40,7 @@ function ChatDrawer({ lang, dict }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const feed = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
   const toLogin = () => router.push(loginHref(lang, `${pathname}?${AI_PARAM}=1`));
 
   const newChat = () => {
@@ -75,10 +76,19 @@ function ChatDrawer({ lang, dict }: Props) {
     }
   };
 
-  // Открытие панели кнопкой AIButton; с вопросом — сразу новый чат с ним
+  // Открытие панели кнопкой AIButton; с вопросом — подставляем его в поле ввода, отправляет пользователь сам
   const onOpen = useEffectEvent((prompt?: string) => {
     setOpen(true);
-    if (prompt) send(prompt, true);
+    if (!prompt) return;
+    setView("chat");
+    setText(prompt);
+    // Фокус после того, как панель стала доступной (снят inert), курсор — в конец текста
+    requestAnimationFrame(() => {
+      const field = input.current;
+      if (!field) return;
+      field.focus();
+      field.setSelectionRange(prompt.length, prompt.length);
+    });
   });
   useEffect(() => onOpenAI(onOpen), []);
 
@@ -190,7 +200,7 @@ function ChatDrawer({ lang, dict }: Props) {
 
       <div className="chat-compose">
         <div className="compose-box">
-          <textarea value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} placeholder={dict.placeholder} aria-label={dict.placeholder} />
+          <textarea ref={input} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} placeholder={dict.placeholder} aria-label={dict.placeholder} />
           <button onClick={() => send(text)} disabled={loading || !text.trim()} aria-label={dict.send}><Icon name="send" size={19} /></button>
         </div>
         <small>{dict.disclaimer}</small>
