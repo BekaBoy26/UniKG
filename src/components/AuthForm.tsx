@@ -129,7 +129,8 @@ export function AuthForm({ lang, dict, mode }: Props) {
       <h1>{title}</h1>
       <p className="auth-lead">{text}</p>
 
-      {error && <p className="auth-alert error" role="alert">{error}</p>}
+      {/* Пока проверяется сессия или пользователь уже вошёл (идёт переход дальше) — ошибку не показываем */}
+      {error && !loading && !(user && mode !== "reset") && <p className="auth-alert error" role="alert">{error}</p>}
       {notice && <p className="auth-alert success" role="status">{notice}</p>}
 
       {!done && (
