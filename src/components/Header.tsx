@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { AIButton } from "./AIButton";
@@ -16,6 +16,19 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
   const { user, loading } = useAuth();
   const [menu, setMenu] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Лёгкая тень у шапки, когда страница прокручена
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    const frame = requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   const { nav } = dict;
   const links: [string, string][] = [["", nav.home], ["/universities", nav.universities], ["/colleges", nav.colleges], ["/about", nav.about]];
   const isActive = (path: string) => (path ? pathname.startsWith(`/${lang}${path}`) : pathname === `/${lang}`);
@@ -27,7 +40,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
   if (isAuthPath(pathname)) return null;
 
   return (
-    <header className="site-header">
+    <header className={scrolled ? "site-header scrolled" : "site-header"}>
       <div className="nav-wrap">
         <Logo lang={lang} label={nav.toHome} />
         <nav className={menu ? "main-nav open" : "main-nav"} aria-label={nav.mainNav}>

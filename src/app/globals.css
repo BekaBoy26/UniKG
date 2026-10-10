@@ -49,7 +49,10 @@ img { display: block; width: 100%; }
 .main-nav { display: flex; align-items: center; gap: 34px; }
 .nav-link { border: 0; background: none; color: var(--muted); padding: 27px 0 23px; font-size: 16px; font-weight: 600; position: relative; }
 .nav-link:hover, .nav-link.active { color: var(--text); }
-.nav-link.active:after { content: ""; position: absolute; bottom: 17px; left: 30%; right: 30%; height: 2px; border-radius: 2px; background: var(--primary); }
+.nav-link { transition: color .25s ease; }
+.nav-link:after { content: ""; position: absolute; bottom: 17px; left: 0; right: 0; height: 2px; border-radius: 2px; background: var(--primary); opacity: 0; transform: scaleX(0); transform-origin: center; transition: transform .4s var(--ease-out), opacity .3s ease; }
+.nav-link:hover:after { opacity: .45; transform: scaleX(.55); }
+.nav-link.active:after { opacity: 1; transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .ai-button, .primary-button, .secondary-button, .light-button, .outline-light { border: 0; border-radius: 12px; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 20px; font-size: 16px; font-weight: 700; transition: .2s ease; }
 .ai-button, .primary-button { color: white; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 25%, transparent); }
@@ -143,7 +146,7 @@ footer { border-top: 1px solid var(--line); background: var(--surface); padding:
 }
 
 @media (max-width: 760px) {
-  .nav-wrap { height: 66px; padding: 0 18px; }.logo { font-size: 18px; }.logo-mark { width: 32px; height: 32px; }.account-text { display: none; }.account-button { padding: 3px; height: 44px; }.main-nav { display: none; position: absolute; top: 66px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--line); padding: 12px 20px 20px; flex-direction: column; align-items: stretch; gap: 2px; box-shadow: var(--shadow); }.main-nav.open { display: flex; }.nav-link { text-align: left; padding: 12px; border-radius: 8px; }.nav-link.active { background: var(--primary-soft); color: var(--primary); }.nav-link.active:after { display: none; }.ai-button { width: 42px; padding: 0; font-size: 0; }.menu-button { display: grid; }.nav-actions { gap: 6px; }
+  .nav-wrap { height: 66px; padding: 0 18px; }.logo { font-size: 18px; }.logo-mark { width: 32px; height: 32px; }.account-text { display: none; }.account-button { padding: 3px; height: 44px; }.main-nav { display: none; position: absolute; top: 66px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--line); padding: 12px 20px 20px; flex-direction: column; align-items: stretch; gap: 2px; box-shadow: var(--shadow); }.main-nav.open { display: flex; }.nav-link { text-align: left; padding: 12px; border-radius: 8px; }.nav-link.active { background: var(--primary-soft); color: var(--primary); }.nav-link:after { display: none; }.ai-button { width: 42px; padding: 0; font-size: 0; }.menu-button { display: grid; }.nav-actions { gap: 6px; }
   main:not(.directory):not(.details-page):not(.about-page):not(.auth-split) { padding: 0 18px; }.hero { grid-template-columns: 1fr; padding: 52px 0 30px; gap: 45px; }.hero h1 { font-size: 48px; letter-spacing: -1.5px; }.hero-copy > p { font-size: 16px; }.hero-actions { flex-direction: column; align-items: stretch; }.hero-visual { height: 390px; }.hero-shape { left: 25px; }.hero-visual > img { left: 8px; width: calc(100% - 15px); }.float-top { left: -4px; top: 45px; }.float-bottom { right: -4px; bottom: 45px; }.quick-search { display: none; }.content-section { margin: 85px 0; }.section-heading { align-items: flex-start; }.section-heading h2 { font-size: 27px; }.section-heading p { display: none; }.all-link { display: none; }.round-arrow { display: none; }.card-carousel { grid-auto-columns: 82%; }.advisor-banner { grid-template-columns: auto 1fr; padding: 28px 24px; gap: 16px; }.advisor-icon { width: 52px; height: 52px; }.advisor-banner .light-button { grid-column: 1 / -1; width: 100%; }.advisor-banner h2 { font-size: 25px; }
   footer { padding: 45px 20px 20px; }.footer-main { grid-template-columns: 1fr 1fr; gap: 35px 25px; }.footer-main > div:first-child { grid-column: 1 / -1; }.footer-bottom { gap: 20px; }
   .directory, .details-page, .about-page { padding: 25px 18px 70px; }.directory-title h1 { font-size: 34px; }.title-art { display: none; }.directory-layout { display: block; }.filter-panel { display: none; position: fixed; z-index: 25; inset: 66px 0 0; border-radius: 0; overflow: auto; padding: 25px 20px; }.filter-panel.mobile-open { display: block; }.apply-filter { display: flex; width: 100%; margin-top: 20px; }.result-toolbar { align-items: center; }.filter-mobile { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 10px; font-size: 14px; }.toolbar-actions label { display: none; }.result-grid { grid-template-columns: 1fr; }.result-grid .card-image { height: 180px; }.result-grid.list .institution-card { display: block; }.result-grid.list .card-image { min-height: 170px; }
@@ -241,8 +244,11 @@ footer { border-top: 1px solid var(--line); background: var(--surface); padding:
 
 /* Заголовок главной: перенос строки из словаря (\n). На кыргызском — чуть меньше, чтобы «Өз университетиңди» помещалось в одну строку */
 .hero h1 span { white-space: pre-line; }
-.hero h1:lang(ky) { font-size: clamp(40px, 3.9vw, 58px); letter-spacing: -1.3px; max-width: 640px; }
-@media (max-width: 760px) { .hero h1:lang(ky) { font-size: 34px; letter-spacing: -0.8px; } }
+/* На кыргызском строки не переносятся (только явный \n перед «тап»), размер подстраивается под ширину экрана */
+.hero h1:lang(ky), .hero h1:lang(ky) span { white-space: pre; }
+.hero h1:lang(ky) { font-size: clamp(30px, 3.6vw, 54px); letter-spacing: -1.2px; max-width: none; }
+@media (max-width: 1024px) { .hero h1:lang(ky) { font-size: clamp(34px, 4.4vw, 44px); } }
+@media (max-width: 760px) { .hero h1:lang(ky) { font-size: clamp(26px, 8.2vw, 40px); letter-spacing: -0.8px; } }
 
 /* Заголовки под шрифт Inter: плотная высота строки и ровные отступы */
 .section-heading h2, .advisor-banner h2, .profile-section h2, .about-page h2 { line-height: 1.15; margin-bottom: 10px; }
@@ -315,14 +321,36 @@ html { scrollbar-color: var(--scrollbar) var(--bg); }
 .prompt-grid button:nth-child(3) { animation-delay: .1s; }
 .prompt-grid button:nth-child(4) { animation-delay: .15s; }
 
-/* Секции проявляются при прокрутке (где браузер поддерживает scroll-driven animations) */
+/* Блоки проявляются при прокрутке — чистый CSS (scroll-driven animations), без JS.
+   Где браузер не поддерживает animation-timeline, блоки просто видны сразу. Соседние блоки — лесенкой */
+@keyframes reveal-up { from { opacity: 0; transform: translateY(26px); } }
 @supports (animation-timeline: view()) {
-  .content-section, .quick-search, .advisor-banner, .problem-section, .features article, .closing-cta, .about-image, .profile-section, .contact-card {
-    animation: rise linear both;
+  .quick-search, .content-section, .advisor-banner, .problem-section > *, .features article, .closing-cta, .profile-section, .contact-card, .footer-main > div {
+    animation: reveal-up linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 35%;
+    animation-range: entry 5% entry 40%;
   }
+  .problem-section > :nth-child(2), .features article:nth-child(2), .footer-main > div:nth-child(2) { animation-range: entry 12% entry 50%; }
+  .features article:nth-child(3), .footer-main > div:nth-child(3) { animation-range: entry 20% entry 60%; }
+  .footer-main > div:nth-child(4) { animation-range: entry 28% entry 70%; }
 }
+
+/* Плавное появление страницы при переходе */
+@keyframes page-in { from { opacity: 0; } }
+main { animation: page-in .45s ease both; }
+
+/* Шапка: лёгкая тень при прокрутке */
+.site-header { transition: box-shadow .3s ease, border-color .3s ease; }
+.site-header.scrolled { box-shadow: 0 10px 30px rgba(8, 13, 28, .12); }
+
+/* «О нас»: первый экран появляется по очереди, обложка — с лёгким приближением */
+.about-hero > * { animation: rise .8s var(--ease-out) backwards; }
+.about-hero > :nth-child(2) { animation-delay: .08s; }
+.about-hero > :nth-child(3) { animation-delay: .16s; }
+.about-hero > :nth-child(4) { animation-delay: .24s; }
+.about-hero > :nth-child(5) { animation-delay: .34s; }
+.about-image > img { animation: cover-in 1.6s var(--ease-out) .2s both; }
+.features article > span { color: color-mix(in srgb, var(--primary) 30%, var(--line)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
