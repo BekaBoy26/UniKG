@@ -90,7 +90,7 @@ async function InstitutionDetails({ params }: { params: Params }) {
             <h2>{d.programsTitle}</h2>
             {item.programs.length ? (
               <div className="program-grid">
-                {item.programs.map((p, i) => <div key={i}><span>{String(i + 1).padStart(2, "0")}</span>{t(p, lang)}<Icon name="arrow" /></div>)}
+                {item.programs.map((p, i) => <div key={i}><span>{String(i + 1).padStart(2, "0")}</span>{t(p, lang)}</div>)}
               </div>
             ) : <p>{d.noPrograms}</p>}
           </section>

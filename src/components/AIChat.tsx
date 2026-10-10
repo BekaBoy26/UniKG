@@ -200,7 +200,7 @@ function ChatDrawer({ lang, dict }: Props) {
 
       <div className="chat-compose">
         <div className="compose-box">
-          <textarea ref={input} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} placeholder={dict.placeholder} aria-label={dict.placeholder} />
+          <textarea ref={input} rows={1} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} placeholder={dict.placeholder} aria-label={dict.placeholder} />
           <button onClick={() => send(text)} disabled={loading || !text.trim()} aria-label={dict.send}><Icon name="send" size={19} /></button>
         </div>
         <small>{dict.disclaimer}</small>

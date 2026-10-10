@@ -78,7 +78,7 @@ export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dic
         <div className="comment-avatar self" aria-hidden="true"><Icon name="send" size={14} /></div>
         {user ? (
           <div>
-            <textarea value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} placeholder={dict.commentPlaceholder} aria-label={dict.commentPlaceholder} />
+            <textarea rows={3} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} placeholder={dict.commentPlaceholder} aria-label={dict.commentPlaceholder} />
             <button className="primary-button" onClick={submit} disabled={sending || !text.trim()}>{dict.send}</button>
           </div>
         ) : (
