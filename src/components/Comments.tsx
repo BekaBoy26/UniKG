@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { api } from "@/lib/api";
@@ -10,14 +10,15 @@ import { accessToken } from "@/lib/supabase/client";
 import { Icon } from "./Icon";
 import { loginHref, useAuth } from "./useAuth";
 
-type Comment = { id: string; body: string; created_at: string; author: { display_name: string | null } | null };
+type Comment = { id: string; body: string; created_at: string; canDelete: boolean; author: { display_name: string | null } | null };
 type Labels = Pick<
   Dictionary["details"],
-  "noComments" | "commentPlaceholder" | "send" | "loginToComment" | "login" | "commentPending" | "commentError" | "commentsLoadError" | "anonymous"
+  "noComments" | "commentPlaceholder" | "send" | "loginToComment" | "login" | "commentError" | "commentsLoadError" | "anonymous" | "commentDelete" | "commentDeleteConfirm"
 >;
 
 const initials = (name: string) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+/** Комментарии публикуются сразу; удалить может автор или админ (признак canDelete считает сервер) */
 export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dict: Labels }) {
   const { user, loading: authLoading } = useAuth();
   const pathname = usePathname();
@@ -25,31 +26,48 @@ export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dic
   const [loadError, setLoadError] = useState(false);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
-  const [notice, setNotice] = useState<"pending" | "error" | null>(null);
+  const [error, setError] = useState(false);
+  const path = `/institutions/${encodeURIComponent(slug)}/comments`;
 
-  // Одобренные комментарии видны всем, без входа
+  // С токеном сервер отмечает, какие комментарии текущий пользователь может удалить — перезагружаем при входе/выходе
   useEffect(() => {
-    api<Comment[]>(`/institutions/${encodeURIComponent(slug)}/comments`)
+    if (authLoading) return;
+    accessToken()
+      .then((token) => api<Comment[]>(path, { token }))
       .then(setComments)
       .catch(() => setLoadError(true));
-  }, [slug]);
+  }, [path, authLoading, user?.id]);
 
   const submit = async () => {
     if (!text.trim() || sending) return;
     setSending(true);
-    setNotice(null);
+    setError(false);
     try {
-      await api(`/institutions/${encodeURIComponent(slug)}/comments`, {
-        method: "POST",
-        token: await accessToken(),
-        body: JSON.stringify({ body: text.trim() }),
-      });
+      const created = await api<Comment>(path, { method: "POST", token: await accessToken(), body: JSON.stringify({ body: text.trim() }) });
+      setComments((list) => [created, ...(list ?? [])]);
       setText("");
-      setNotice("pending");
     } catch {
-      setNotice("error");
+      setError(true);
     } finally {
       setSending(false);
+    }
+  };
+
+  // Enter — отправить, Shift+Enter — новая строка
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      submit();
+    }
+  };
+
+  const remove = async (id: string) => {
+    if (!window.confirm(dict.commentDeleteConfirm)) return;
+    try {
+      await api(`${path}/${id}`, { method: "DELETE", token: await accessToken() });
+      setComments((list) => list?.filter((c) => c.id !== id) ?? null);
+    } catch {
+      setError(true);
     }
   };
 
@@ -65,21 +83,30 @@ export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dic
           <div className="comment" key={c.id}>
             <div className="comment-avatar" aria-hidden="true">{initials(name)}</div>
             <div>
-              <div className="comment-meta"><strong>{name}</strong><span>{date(c.created_at)}</span></div>
+              <div className="comment-meta">
+                <strong>{name}</strong>
+                <span>
+                  {date(c.created_at)}
+                  {c.canDelete && (
+                    <button type="button" className="comment-delete" onClick={() => remove(c.id)} aria-label={dict.commentDelete} title={dict.commentDelete}>
+                      <Icon name="trash" size={15} />
+                    </button>
+                  )}
+                </span>
+              </div>
               <p>{c.body}</p>
             </div>
           </div>
         );
       })}
 
-      {notice && <p className={notice === "error" ? "comment-notice error" : "comment-notice"} role="status">{notice === "error" ? dict.commentError : dict.commentPending}</p>}
+      {error && <p className="comment-notice error" role="status">{dict.commentError}</p>}
 
       <div className="comment-form">
-        <div className="comment-avatar self" aria-hidden="true"><Icon name="send" size={14} /></div>
         {user ? (
-          <div>
-            <textarea rows={3} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} placeholder={dict.commentPlaceholder} aria-label={dict.commentPlaceholder} />
-            <button className="primary-button" onClick={submit} disabled={sending || !text.trim()}>{dict.send}</button>
+          <div className="compose-box comment-compose">
+            <textarea rows={1} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} onKeyDown={onKeyDown} placeholder={dict.commentPlaceholder} aria-label={dict.commentPlaceholder} />
+            <button type="button" onClick={submit} disabled={sending || !text.trim()} aria-label={dict.send} title={dict.send}><Icon name="send" size={19} /></button>
           </div>
         ) : (
           !authLoading && (
