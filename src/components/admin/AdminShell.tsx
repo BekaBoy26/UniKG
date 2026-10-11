@@ -2,25 +2,35 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { Icon, type IconName } from "../Icon";
 import { Logo } from "../Logo";
+import { SETTINGS_TOGGLE, SettingsModal } from "../SettingsModal";
 import { displayName, loginHref, useAuth, useRole } from "../useAuth";
 
 /** true, когда роль админа подтверждена: страницы админки грузят данные только после этого */
 const AdminReady = createContext(false);
 export const useAdminReady = () => useContext(AdminReady);
 
-type Props = { lang: Locale; dict: Dictionary["admin"]; toHome: string; children: ReactNode };
+type Props = {
+  lang: Locale;
+  dict: Dictionary["admin"];
+  settings: Dictionary["settings"];
+  auth: Dictionary["auth"];
+  toHome: string;
+  account: string;
+  children: ReactNode;
+};
 
 /** Оболочка админки: боковое меню и проверка роли. Данные отдаёт только бэкенд — он сам проверяет права */
-export function AdminShell({ lang, dict, toHome, children }: Props) {
+export function AdminShell({ lang, dict, settings, auth, toHome, account, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading } = useAuth();
   const role = useRole(user);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) router.replace(loginHref(lang, pathname));
@@ -72,12 +82,17 @@ export function AdminShell({ lang, dict, toHome, children }: Props) {
         )}
         <div className="admin-sidebar-foot">
           {user && (
-            <div className="admin-user">
-              <span className="account-avatar">
-                {/* eslint-disable-next-line @next/next/no-img-element -- аватар Google, внешний домен */}
-                {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : name.slice(0, 1).toUpperCase()}
-              </span>
-              <span><strong>{name}</strong>{user.email && user.email !== name && <small>{user.email}</small>}</span>
+            // Блок профиля открывает настройки (тема, язык, выход) — как в шапке сайта
+            <div className="settings-anchor admin-settings">
+              <button className="admin-user" onClick={() => setSettingsOpen((open) => !open)} aria-expanded={settingsOpen} aria-label={`${account}: ${name}`} {...{ [SETTINGS_TOGGLE]: "" }}>
+                <span className="account-avatar">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- аватар Google, внешний домен */}
+                  {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : name.slice(0, 1).toUpperCase()}
+                </span>
+                <span><strong>{name}</strong>{user.email && user.email !== name && <small>{user.email}</small>}</span>
+              </button>
+              {/* Ссылка «Админ-панель» здесь не нужна — мы уже в ней */}
+              {settingsOpen && <SettingsModal lang={lang} dict={settings} auth={auth} user={user} isAdmin={false} close={() => setSettingsOpen(false)} />}
             </div>
           )}
           <Link className="admin-to-site" href={`/${lang}`}><Icon name="external" size={17} /> {dict.toSite}</Link>

@@ -9,5 +9,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AdminLayout({ children }: LayoutProps<"/[lang]/admin">) {
   const { lang, dict } = await getI18n();
-  return <AdminShell lang={lang} dict={dict.admin} toHome={dict.nav.toHome}>{children}</AdminShell>;
+  return (
+    <AdminShell lang={lang} dict={dict.admin} settings={dict.settings} auth={dict.auth} toHome={dict.nav.toHome} account={dict.nav.account}>
+      {children}
+    </AdminShell>
+  );
 }

@@ -384,7 +384,12 @@ main { animation: page-in .45s ease both; }
 .admin-nav a.active { background: var(--primary-soft); color: var(--primary); }
 .admin-nav a.active:before { content: ""; position: absolute; left: -16px; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--primary); }
 .admin-sidebar-foot { margin-top: auto; display: grid; gap: 8px; }
-.admin-user { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px; border-radius: 12px; background: var(--surface-2); }
+.admin-user { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: var(--surface-2); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, transform .16s var(--ease-out); }
+.admin-user:hover, .admin-user[aria-expanded="true"] { background: var(--primary-soft); border-color: color-mix(in srgb, var(--primary) 25%, transparent); }
+.admin-user:active { transform: scale(.98); }
+/* В сайдбаре настройки раскрываются вверх от блока профиля */
+.admin-settings .settings-popover { top: auto; bottom: calc(100% + 10px); left: 0; right: auto; max-height: calc(100vh - 170px); transform-origin: bottom left; animation-name: popover-up; }
+@keyframes popover-up { from { opacity: 0; transform: translateY(6px) scale(.98); } }
 .admin-user > span:last-child { min-width: 0; }
 .admin-user strong, .admin-user small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-user strong { font-size: 14px; }
@@ -522,17 +527,22 @@ a.admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow); bor
   .admin-columns { grid-template-columns: 1fr; }
 }
 @media (max-width: 900px) {
-  .admin-shell { grid-template-columns: 1fr; }
-  .admin-sidebar { z-index: 20; height: auto; flex-direction: row; align-items: center; gap: 12px; padding: 10px 14px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(14px); }
-  .admin-sidebar { scrollbar-width: none; }
+  .admin-shell { grid-template-columns: minmax(0, 1fr); }
+  .admin-sidebar { z-index: 20; height: auto; flex-direction: row; align-items: center; gap: 12px; padding: 10px 14px; border-right: 0; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(14px); }
   .admin-sidebar > * { flex: 0 0 auto; }
   .admin-brand { padding: 0; }
-  .admin-brand .logo span, .admin-badge, .admin-user { display: none; }
-  .admin-nav { display: flex; }
+  .admin-brand .logo span, .admin-badge { display: none; }
+  /* Прокручивается только меню, а не вся панель — иначе панель обрезала бы окно настроек */
+  .admin-nav { display: flex; flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .admin-nav a { padding: 9px 11px; white-space: nowrap; font-size: 14px; }
   .admin-nav a.active:before { display: none; }
-  .admin-sidebar-foot { margin: 0 0 0 auto; display: flex; }
+  .admin-sidebar-foot { margin: 0 0 0 auto; display: flex; align-items: center; }
   .admin-to-site { white-space: nowrap; }
+  /* На телефоне от профиля остаётся аватар; окно настроек — во всю ширину под панелью */
+  .admin-settings { position: static; }
+  .admin-user { width: auto; padding: 3px; border-radius: 999px; background: transparent; }
+  .admin-user > span:last-child { display: none; }
+  .admin-settings .settings-popover { position: absolute; top: calc(100% + 8px); bottom: auto; left: 12px; right: 12px; width: auto; max-height: calc(100vh - 90px); transform-origin: top right; animation-name: popover-in; }
   .admin-main { padding: 24px 16px 60px; }
   .admin-lang-bar { top: 74px; }
 }
