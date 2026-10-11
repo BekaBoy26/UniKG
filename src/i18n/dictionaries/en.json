@@ -14,7 +14,8 @@
     "toHome": "UniKG, go to home page",
     "login": "Sign in",
     "account": "Account",
-    "admin": "Admin"
+    "admin": "Admin",
+    "favorites": "Favorites"
   },
   "common": {
     "university": "University",
@@ -29,7 +30,10 @@
     "som": "KGS",
     "perYear": "per year",
     "notSpecified": "Not specified",
-    "toTop": "Back to top"
+    "toTop": "Back to top",
+    "favoriteAdd": "Add to favorites",
+    "favoriteRemove": "Remove from favorites",
+    "favoriteSaved": "In favorites"
   },
   "home": {
     "eyebrow": "Your education navigator",
@@ -81,7 +85,12 @@
     "helpText": "Need help choosing?",
     "askAi": "Ask UniKG AI",
     "showResults": "Show results",
-    "results": { "one": "{n} option", "few": "{n} options", "many": "{n} options", "other": "{n} options" },
+    "results": {
+      "one": "{n} option",
+      "few": "{n} options",
+      "many": "{n} options",
+      "other": "{n} options"
+    },
     "byQuery": " for your search",
     "sort": "Sort:",
     "sortPopular": "By popularity",
@@ -206,7 +215,13 @@
     "platform": "Platform",
     "language": "Language",
     "rights": "© 2026 UniKG. Education navigation.",
-    "search": "Search"
+    "search": "Search",
+    "catalog": "Catalog",
+    "sources": "Data sources",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "faq": "FAQ",
+    "languages": "Site language"
   },
   "notFound": {
     "title": "Page not found",
@@ -366,5 +381,16 @@
     "never": "Never",
     "noUsers": "No users yet.",
     "anonymous": "User"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "lead": "Universities and colleges you saved — come back to them and compare.",
+    "count": "Saved: {n}",
+    "emptyTitle": "Nothing here yet",
+    "emptyText": "Tap the heart on a university or college card and it will appear here.",
+    "guestNote": "Favorites are stored in this browser. Sign in to have them on all your devices.",
+    "login": "Sign in",
+    "toUniversities": "Universities",
+    "toColleges": "Colleges"
   }
 }

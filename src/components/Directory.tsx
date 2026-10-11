@@ -8,6 +8,7 @@ import type { FieldKey, InstitutionType, Ownership } from "@/lib/institutions";
 import { AIButton } from "./AIButton";
 import { Icon } from "./Icon";
 import { InstitutionCard, type CardItem, type CardLabels } from "./InstitutionCard";
+import { Select } from "./Select";
 
 const PAGE_SIZE = 9;
 type Sort = "popular" | "name" | "city" | "cost";
@@ -66,25 +67,9 @@ export function Directory({ lang, type, items, fieldOptions, dict, labels }: Pro
       <div className="directory-layout">
         <aside className={mobileFilters ? "filter-panel mobile-open" : "filter-panel"}>
           <div className="filter-title"><h3>{dict.filters}</h3><button className="clear-button" onClick={clear}>{dict.reset}</button></div>
-          <label>{dict.city}
-            <select value={city} onChange={(e) => setCity(e.target.value)}>
-              <option value="">{dict.allCities}</option>
-              {cities.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </label>
-          <label>{dict.kind}
-            <select value={ownership} onChange={(e) => setOwnership(e.target.value as Ownership | "")}>
-              <option value="">{dict.anyKind}</option>
-              <option value="state">{labels.state}</option>
-              <option value="private">{labels.private}</option>
-            </select>
-          </label>
-          <label>{dict.field}
-            <select value={field} onChange={(e) => setField(e.target.value as FieldKey | "")}>
-              <option value="">{dict.allFields}</option>
-              {fieldOptions.map(([key, label]) => <option key={key} value={key}>{label}</option>)}
-            </select>
-          </label>
+          <Select label={dict.city} value={city} onChange={setCity} options={[["", dict.allCities], ...cities.map((c): [string, string] => [c, c])]} />
+          <Select label={dict.kind} value={ownership} onChange={setOwnership} options={[["", dict.anyKind], ["state", labels.state], ["private", labels.private]]} />
+          <Select label={dict.field} value={field} onChange={setField} options={[["", dict.allFields], ...fieldOptions]} />
           <div className="filter-help"><Icon name="spark" size={18} /><p>{dict.helpText}<AIButton lang={lang}>{dict.askAi}</AIButton></p></div>
           <button className="primary-button apply-filter" onClick={() => setMobileFilters(false)}>{dict.showResults}</button>
         </aside>
@@ -93,14 +78,7 @@ export function Directory({ lang, type, items, fieldOptions, dict, labels }: Pro
             <div><strong>{plural(lang, filtered.length, dict.results)}</strong><span>{dict.byQuery}</span></div>
             <button className="filter-mobile" onClick={() => setMobileFilters(!mobileFilters)}><Icon name="filter" /> {dict.filters}</button>
             <div className="toolbar-actions">
-              <label>{dict.sort}
-                <select value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
-                  <option value="popular">{dict.sortPopular}</option>
-                  <option value="name">{dict.sortName}</option>
-                  <option value="city">{dict.sortCity}</option>
-                  <option value="cost">{dict.sortCost}</option>
-                </select>
-              </label>
+              <Select className="sort-select" label={dict.sort} value={sort} onChange={setSort} options={[["popular", dict.sortPopular], ["name", dict.sortName], ["city", dict.sortCity], ["cost", dict.sortCost]]} />
               <div className="view-toggle">
                 <button className={view === "list" ? "active" : ""} onClick={() => setView("list")} aria-label={dict.list} title={dict.list} aria-pressed={view === "list"}><Icon name="list" size={17} /></button>
                 <button className={view === "grid" ? "active" : ""} onClick={() => setView("grid")} aria-label={dict.grid} title={dict.grid} aria-pressed={view === "grid"}><Icon name="grid" size={17} /></button>

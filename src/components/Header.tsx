@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { AIButton } from "./AIButton";
+import { useFavorites } from "./favorites";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 import { SETTINGS_TOGGLE, SettingsModal } from "./SettingsModal";
@@ -15,6 +16,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
   const pathname = usePathname();
   const { user, loading } = useAuth();
   const role = useRole(user);
+  const favorites = useFavorites();
   const [menu, setMenu] = useState(false);
   const [settings, setSettings] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -61,6 +63,10 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
           )}
         </nav>
         <div className="nav-actions">
+          <Link href={`/${lang}/favorites`} className={isActive("/favorites") ? "icon-button fav-link active" : "icon-button fav-link"} aria-label={nav.favorites} title={nav.favorites}>
+            <Icon name="heart" size={19} />
+            {favorites.slugs.length > 0 && <span className="fav-count" key={favorites.slugs.length}>{favorites.slugs.length}</span>}
+          </Link>
           <AIButton lang={lang} className="ai-button" label={nav.ai}><Icon name="spark" size={17} /> {nav.ai}</AIButton>
           {user ? (
             // Блок аккаунта открывает настройки (тема, язык, выход)

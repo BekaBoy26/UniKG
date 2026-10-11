@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { AIChat } from "@/components/AIChat";
 import { Footer } from "@/components/Footer";
+import { FavoritesSync } from "@/components/favorites";
 import { Header } from "@/components/Header";
 import { themeScript } from "@/components/theme";
 import { locales } from "@/i18n/config";
@@ -36,6 +37,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
       <body>
         <div className="app-shell">
           <Header lang={lang} dict={{ nav: dict.nav, settings: dict.settings, auth: dict.auth }} />
+          <FavoritesSync />
           {children}
           <Footer lang={lang} dict={{ nav: dict.nav, footer: dict.footer }} />
         </div>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AIButton } from "@/components/AIButton";
 import { Comments } from "@/components/Comments";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import { Icon } from "@/components/Icon";
 import { ProgramGrid } from "@/components/ProgramGrid";
 import { getI18n } from "@/i18n/dictionaries";
@@ -110,6 +111,7 @@ async function InstitutionDetails({ params }: { params: Params }) {
           {item.website && <p><span>{d.website}</span><a href={item.website} target="_blank" rel="noreferrer">{new URL(item.website).host} <Icon name="external" size={15} /></a></p>}
           <p><span>{d.city}</span><strong>{city}</strong></p>
           {item.address && <p><span>{d.address}</span><strong>{t(item.address, lang)}</strong></p>}
+          <FavoriteButton slug={item.slug} withText labels={{ add: common.favoriteAdd, remove: common.favoriteRemove, saved: common.favoriteSaved }} />
           <AIButton lang={lang} className="primary-button" prompt={d.askAbout.replace("{name}", t(item.name, lang))}><Icon name="spark" size={17} /> {d.askAi}</AIButton>
           <small>{d.disclaimer}</small>
           {!!item.sources.length && (
