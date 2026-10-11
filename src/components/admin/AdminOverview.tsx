@@ -31,7 +31,7 @@ export function AdminOverview({ lang, dict }: Props) {
     ["universities", dict.universities, "spark", `${base}/universities`],
     ["colleges", dict.colleges, "map", `${base}/colleges`],
     ["comments", dict.comments, "chat", `${base}/comments`],
-    ["users", dict.statUsers, "users", ""],
+    ["users", dict.statUsers, "users", `${base}/users`],
   ];
   const date = (iso: string) => new Date(iso).toLocaleDateString(lang === "en" ? "en-GB" : "ru-RU");
 
@@ -41,20 +41,13 @@ export function AdminOverview({ lang, dict }: Props) {
       {error && <p className="auth-alert error" role="alert">{dict.loadError}</p>}
 
       <div className="admin-stats">
-        {cards.map(([key, label, icon, href], i) => {
-          const body = (
-            <>
-              <span className="admin-stat-icon"><Icon name={icon} size={20} /></span>
-              <strong>{stats ? stats[key] : <span className="admin-skeleton" />}</strong>
-              <small>{label}</small>
-            </>
-          );
-          return href ? (
-            <Link key={key} href={href} className="admin-stat" style={{ "--i": i } as CSSProperties}>{body}</Link>
-          ) : (
-            <div key={key} className="admin-stat" style={{ "--i": i } as CSSProperties}>{body}</div>
-          );
-        })}
+        {cards.map(([key, label, icon, href], i) => (
+          <Link key={key} href={href} className="admin-stat" style={{ "--i": i } as CSSProperties}>
+            <span className="admin-stat-icon"><Icon name={icon} size={20} /></span>
+            <strong>{stats ? stats[key] : <span className="admin-skeleton" />}</strong>
+            <small>{label}</small>
+          </Link>
+        ))}
       </div>
 
       <div className="admin-columns">

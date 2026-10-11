@@ -40,7 +40,8 @@ export default async function HomePage() {
       <section className="hero">
         <div className="hero-copy">
           <div className="eyebrow"><Icon name="spark" size={16} /> {home.eyebrow}</div>
-          <h1>{home.titleStart} <span>{home.titleAccent}</span></h1>
+          {/* Подчёркнуто только слово-акцент; хвост (на кыргызском — «тап») идёт отдельной строкой */}
+          <h1>{home.titleStart} <span>{home.titleAccent}</span>{home.titleEnd && <><br />{home.titleEnd}</>}</h1>
           <p>{home.lead}</p>
           <div className="hero-actions">
             <Link className="primary-button" href={`/${lang}/universities`}>{home.findUniversity} <Icon name="arrow" /></Link>

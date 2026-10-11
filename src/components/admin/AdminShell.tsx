@@ -42,6 +42,7 @@ export function AdminShell({ lang, dict, settings, auth, toHome, account, childr
     ["/universities", dict.universities, "spark"],
     ["/colleges", dict.colleges, "map"],
     ["/comments", dict.comments, "chat"],
+    ["/users", dict.statUsers, "users"],
   ];
   const isActive = (path: string) => (path ? pathname.startsWith(base + path) : pathname === base);
   const avatar = user?.user_metadata?.avatar_url as string | undefined;

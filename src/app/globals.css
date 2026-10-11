@@ -214,6 +214,12 @@ footer { border-top: 1px solid var(--line); background: var(--surface); padding:
 .auth-alert { margin: 0 0 18px; padding: 12px 14px; border-radius: 12px; font-size: 15px; line-height: 1.5; }
 .auth-alert.error { color: #e5484d; background: color-mix(in srgb, #e5484d 12%, transparent); }
 .auth-alert.success { color: var(--success); background: color-mix(in srgb, var(--success) 13%, transparent); }
+/* «Изменить почту» под сообщением об отправленном письме */
+.auth-back { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: border-color .2s ease, color .2s ease, transform .16s var(--ease-out); }
+.auth-back svg { transform: rotate(180deg); transition: translate .2s var(--ease-out); }
+.auth-back:hover { border-color: var(--primary); color: var(--primary); }
+.auth-back:hover svg { translate: -3px 0; }
+.auth-back:active { transform: scale(.97); }
 .auth-switch { margin: 24px 0 0; text-align: center; color: var(--muted); font-size: 15px; }
 .auth-switch a { color: var(--primary); font-weight: 800; text-decoration: none; }
 .auth-privacy { margin: 14px 0 0; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.5; }
@@ -252,7 +258,7 @@ footer { border-top: 1px solid var(--line); background: var(--surface); padding:
 
 /* Заголовок главной: перенос строки из словаря (\n). На кыргызском — чуть меньше, чтобы «Өз университетиңди» помещалось в одну строку */
 .hero h1 span { white-space: pre-line; }
-/* На кыргызском строки не переносятся (только явный \n перед «тап»), размер подстраивается под ширину экрана */
+/* На кыргызском строки не переносятся (только <br> перед «тап» — он вне подчёркнутого слова), размер подстраивается под ширину экрана */
 .hero h1:lang(ky), .hero h1:lang(ky) span { white-space: pre; }
 .hero h1:lang(ky) { font-size: clamp(30px, 3.6vw, 54px); letter-spacing: -1.2px; max-width: none; }
 @media (max-width: 1024px) { .hero h1:lang(ky) { font-size: clamp(34px, 4.4vw, 44px); } }
@@ -333,13 +339,13 @@ html { scrollbar-color: var(--scrollbar) var(--bg); }
    Где браузер не поддерживает animation-timeline, блоки просто видны сразу. Соседние блоки — лесенкой */
 @keyframes reveal-up { from { opacity: 0; transform: translateY(26px); } }
 @supports (animation-timeline: view()) {
-  .quick-search, .content-section, .advisor-banner, .problem-section > *, .features article, .closing-cta, .profile-section, .contact-card, .footer-main > div {
+  .quick-search, .content-section, .advisor-banner, .profile-section, .contact-card, .footer-main > div {
     animation: reveal-up linear both;
     animation-timeline: view();
     animation-range: entry 5% entry 40%;
   }
-  .problem-section > :nth-child(2), .features article:nth-child(2), .footer-main > div:nth-child(2) { animation-range: entry 12% entry 50%; }
-  .features article:nth-child(3), .footer-main > div:nth-child(3) { animation-range: entry 20% entry 60%; }
+  .footer-main > div:nth-child(2) { animation-range: entry 12% entry 50%; }
+  .footer-main > div:nth-child(3) { animation-range: entry 20% entry 60%; }
   .footer-main > div:nth-child(4) { animation-range: entry 28% entry 70%; }
 }
 
@@ -358,6 +364,35 @@ main { animation: page-in .45s ease both; }
 .about-hero > :nth-child(4) { animation-delay: .24s; }
 .about-hero > :nth-child(5) { animation-delay: .34s; }
 .about-image > img { animation: cover-in 1.6s var(--ease-out) .2s both; }
+
+/* Появление при прокрутке (data-reveal + ScrollReveal): скрыто, пока блок не дошёл до экрана; --d — задержка */
+[data-reveal] { opacity: 0; transition: opacity .8s ease, transform .9s var(--ease-out); transition-delay: var(--d, 0ms); }
+[data-reveal="up"] { transform: translateY(36px); }
+[data-reveal="left"] { transform: translateX(-48px); }
+[data-reveal="right"] { transform: translateX(48px); }
+[data-reveal="zoom"] { transform: scale(.92) translateY(24px); }
+[data-reveal="line"] { opacity: 1; transform: scaleX(0); transform-origin: left; }
+[data-reveal].revealed { opacity: 1; transform: none; }
+
+/* Линия-акцент под заголовком «Почему» вырастает слева направо */
+.about-line { display: block; width: 72px; height: 4px; margin-top: 18px; border-radius: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+
+/* Карточки возможностей: иконка «выскакивает», номер выезжает после самой карточки; при наведении — подъём */
+/* Появление — через transform с задержкой, наведение — через отдельные translate/scale/rotate без задержки */
+.features article { transition: opacity .8s ease var(--d, 0ms), transform .9s var(--ease-out) var(--d, 0ms), translate .3s var(--ease-out), box-shadow .3s ease, border-color .3s ease; }
+.features article .feature-icon { opacity: 0; transform: scale(.3) rotate(-25deg); transition: opacity .5s ease calc(var(--d, 0ms) + 250ms), transform .7s cubic-bezier(.34, 1.56, .64, 1) calc(var(--d, 0ms) + 250ms), scale .3s var(--ease-out), rotate .3s var(--ease-out); }
+.features article > span { opacity: 0; transform: translateX(14px); transition: opacity .6s ease, transform .7s var(--ease-out); transition-delay: calc(var(--d, 0ms) + 350ms); }
+.features article.revealed .feature-icon, .features article.revealed > span { opacity: 1; transform: none; }
+.features article.revealed:hover { translate: 0 -6px; box-shadow: 0 18px 40px rgba(36, 61, 171, .14); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
+.features article.revealed:hover .feature-icon { scale: 1.08; rotate: -6deg; }
+
+/* Финальный блок: после приближения — содержимое лесенкой, фон медленно переливается */
+.closing-cta { background-size: 200% 200%; animation: cta-shift 9s ease-in-out infinite alternate; }
+@keyframes cta-shift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+.closing-cta > div { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .8s var(--ease-out); }
+.closing-cta > div:first-child { transition-delay: .25s; }
+.closing-cta > div:last-child { transition-delay: .4s; }
+.closing-cta.revealed > div { opacity: 1; transform: none; }
 .features article > span { color: color-mix(in srgb, var(--primary) 30%, var(--line)); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -467,6 +502,14 @@ a.admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow); bor
 .admin-pill { display: inline-block; white-space: nowrap; padding: 4px 10px; border-radius: 99px; background: color-mix(in srgb, var(--success) 13%, transparent); color: var(--success); font-size: 13px; font-weight: 700; }
 .admin-pill.private { background: color-mix(in srgb, var(--indigo) 13%, transparent); color: var(--indigo); }
 .admin-muted { color: var(--muted); }
+/* Пользователи: круглый аватар, способ входа, роль */
+.admin-avatar { border-radius: 50%; width: 42px; height: 42px; font-size: 16px; font-weight: 800; }
+.admin-users .admin-entity small { overflow-wrap: anywhere; }
+.admin-users td { white-space: nowrap; }
+.admin-users td:first-child { white-space: normal; min-width: 240px; }
+.admin-provider { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 600; }
+.admin-pill.role-admin { background: var(--primary-soft); color: var(--primary); }
+.admin-pill.role-user { background: var(--surface-2); color: var(--muted); }
 .admin-row-actions { display: flex; justify-content: flex-end; gap: 6px; }
 .admin-row-actions .icon-button { width: 36px; height: 36px; border-radius: 10px; }
 .icon-button.danger:hover, .secondary-button.danger:hover { color: #e5484d; border-color: color-mix(in srgb, #e5484d 45%, var(--line)); background: color-mix(in srgb, #e5484d 8%, var(--surface)); }

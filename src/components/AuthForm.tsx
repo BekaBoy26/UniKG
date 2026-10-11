@@ -135,6 +135,12 @@ export function AuthForm({ lang, dict, mode }: Props) {
       {/* Пока проверяется сессия или пользователь уже вошёл (идёт переход дальше) — ошибку не показываем */}
       {error && !loading && !(user && mode !== "reset") && <p className="auth-alert error" role="alert">{error}</p>}
       {notice && <p className="auth-alert success" role="status">{notice}</p>}
+      {/* Ошибся в адресе — возвращаемся к форме, введённые данные сохраняются */}
+      {done && (mode === "register" || mode === "forgot") && (
+        <button className="auth-back" type="button" onClick={() => setNotice("")}>
+          <Icon name="arrow" size={16} /> {dict.changeEmail}
+        </button>
+      )}
 
       {!done && (
         <form onSubmit={submit}>

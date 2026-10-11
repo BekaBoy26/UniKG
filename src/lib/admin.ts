@@ -24,6 +24,19 @@ export type AdminComment = {
   institution: { slug: string; short: string; type: InstitutionType } | null;
 };
 
+export type AdminUser = {
+  id: string;
+  display_name: string | null;
+  role: "user" | "admin";
+  created_at: string;
+  email: string | null;
+  avatar_url: string | null;
+  /** email, google… (raw_app_meta_data.provider) */
+  provider: string | null;
+  last_sign_in_at: string | null;
+  comments: number;
+};
+
 export async function adminApi<T>(path: string, init: RequestInit = {}) {
   return api<T>(`/admin${path}`, { ...init, token: await accessToken() });
 }
