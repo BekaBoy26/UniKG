@@ -370,17 +370,14 @@ main { animation: page-in .45s ease both; }
   .main-nav.open > :nth-child(5) { animation-delay: .16s; }
 }
 
-/* Программы: на телефоне видны первые 10, остальные — по кнопке «Показать ещё» */
-.program-more { display: none; width: 100%; margin-top: 12px; height: 48px; align-items: center; justify-content: center; gap: 8px; border: 1px dashed color-mix(in srgb, var(--primary) 40%, var(--line)); border-radius: 11px; background: transparent; color: var(--primary); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background-color .2s ease, transform .16s var(--ease-out); }
+/* Программы: видны первые 10, остальные — по кнопке «Показать ещё» */
+.program-more { display: flex; width: 100%; margin-top: 12px; height: 48px; align-items: center; justify-content: center; gap: 8px; border: 1px dashed color-mix(in srgb, var(--primary) 40%, var(--line)); border-radius: 11px; background: transparent; color: var(--primary); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background-color .2s ease, transform .16s var(--ease-out); }
 .program-more:hover { background: var(--primary-soft); }
 .program-more:active { transform: scale(.98); }
 .program-more svg { transform: rotate(90deg); transition: transform .3s var(--ease-out); }
 .program-more.open svg { transform: rotate(-90deg); }
-@media (max-width: 760px) {
-  .program-grid:not(.expanded) > div:nth-child(n + 11) { display: none; }
-  .program-grid.expanded > div:nth-child(n + 11) { animation: rise .45s var(--ease-out) backwards; animation-delay: calc(var(--n, 0) * 30ms); }
-  .program-more { display: flex; }
-}
+.program-grid:not(.expanded) > div:nth-child(n + 11) { display: none; }
+.program-grid.expanded > div:nth-child(n + 11) { animation: rise .45s var(--ease-out) backwards; animation-delay: calc(var(--n, 0) * 30ms); }
 
 /* «О нас»: первый экран появляется по очереди, обложка — с лёгким приближением */
 .about-hero > * { animation: rise .8s var(--ease-out) backwards; }

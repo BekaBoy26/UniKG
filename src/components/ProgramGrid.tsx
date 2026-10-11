@@ -7,7 +7,7 @@ const VISIBLE = 10;
 
 type Props = { programs: string[]; showMore: string; showLess: string };
 
-/** Список программ. На телефоне видны первые 10, остальные — по кнопке (CSS скрывает их только на узком экране) */
+/** Список программ: видны первые 10, остальные — по кнопке «Показать ещё» (лишние скрывает CSS) */
 export function ProgramGrid({ programs, showMore, showLess }: Props) {
   const [expanded, setExpanded] = useState(false);
   const grid = useRef<HTMLDivElement>(null);
