@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { locales, localeNames, type Locale } from "@/i18n/config";
@@ -14,10 +15,10 @@ import { useSwitchLocale } from "./useSwitchLocale";
 /** Помечает кнопки, которые сами открывают/закрывают настройки — клик по ним не считается «снаружи» */
 export const SETTINGS_TOGGLE = "data-settings-toggle";
 
-type Props = { lang: Locale; dict: Dictionary["settings"]; auth: Dictionary["auth"]; user: User; close: () => void };
+type Props = { lang: Locale; dict: Dictionary["settings"]; auth: Dictionary["auth"]; user: User; isAdmin: boolean; close: () => void };
 
 /** Настройки — выпадающее окно под шестерёнкой; закрывается кликом вне окна и по Esc */
-export function SettingsModal({ lang, dict, auth, user, close }: Props) {
+export function SettingsModal({ lang, dict, auth, user, isAdmin, close }: Props) {
   const [theme, setTheme] = useState<Theme>(readTheme);
   const switchLocale = useSwitchLocale();
   const router = useRouter();
@@ -58,6 +59,11 @@ export function SettingsModal({ lang, dict, auth, user, close }: Props) {
           <div><span>{auth.signedInAs}</span><strong>{displayName(user)}</strong>{user.email && displayName(user) !== user.email && <span>{user.email}</span>}</div>
           <button className="secondary-button" onClick={signOut}>{auth.logout}</button>
         </div>
+        {isAdmin && (
+          <Link className="admin-entry" href={`/${lang}/admin`} onClick={close}>
+            <span><Icon name="grid" size={18} /></span>{auth.adminPanel}<Icon name="chevron" size={16} />
+          </Link>
+        )}
       </section>
       <section>
         <h3>{dict.appearance}</h3><p>{dict.appearanceText}</p>

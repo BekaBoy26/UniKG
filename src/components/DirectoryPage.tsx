@@ -5,6 +5,7 @@ import { getInstitutions } from "@/lib/institutions.server";
 import { Directory } from "./Directory";
 import { Icon } from "./Icon";
 import { toCard } from "./InstitutionCard";
+import { ScrollTopButton } from "./ScrollTopButton";
 
 export async function DirectoryPage({ type }: { type: InstitutionType }) {
   const { lang, dict } = await getI18n();
@@ -27,6 +28,7 @@ export async function DirectoryPage({ type }: { type: InstitutionType }) {
         <div className="title-art"><Icon name={university ? "spark" : "map"} size={32} /></div>
       </div>
       <Directory lang={lang} type={type} items={items} fieldOptions={fieldOptions} dict={dict.directory} labels={dict.common} />
+      <ScrollTopButton label={dict.common.toTop} />
     </main>
   );
 }

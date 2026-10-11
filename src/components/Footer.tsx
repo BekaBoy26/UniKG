@@ -8,12 +8,12 @@ import { AIButton } from "./AIButton";
 import { Icon } from "./Icon";
 import { LanguageSelect } from "./LanguageSelect";
 import { Logo } from "./Logo";
-import { isAuthPath } from "./useAuth";
+import { isAdminPath, isAuthPath } from "./useAuth";
 
 export function Footer({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "nav" | "footer"> }) {
   const { nav, footer } = dict;
   const pathname = usePathname();
-  if (isAuthPath(pathname)) return null;
+  if (isAuthPath(pathname) || isAdminPath(pathname)) return null;
   return (
     <footer>
       <div className="footer-main">

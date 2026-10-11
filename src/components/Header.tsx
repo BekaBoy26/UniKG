@@ -9,11 +9,12 @@ import { AIButton } from "./AIButton";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 import { SETTINGS_TOGGLE, SettingsModal } from "./SettingsModal";
-import { displayName, isAuthPath, loginHref, useAuth } from "./useAuth";
+import { displayName, isAdminPath, isAuthPath, loginHref, useAuth, useRole } from "./useAuth";
 
 export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "nav" | "settings" | "auth"> }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const role = useRole(user);
   const [menu, setMenu] = useState(false);
   const [settings, setSettings] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -37,7 +38,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
   const name = user ? displayName(user) : "";
   const email = user?.email && user.email !== name ? user.email : null;
 
-  if (isAuthPath(pathname)) return null;
+  if (isAuthPath(pathname) || isAdminPath(pathname)) return null;
 
   return (
     <header className={scrolled ? "site-header scrolled" : "site-header"}>
@@ -60,7 +61,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
                 </span>
                 <span className="account-text"><strong>{name}</strong>{email && <small>{email}</small>}</span>
               </button>
-              {settings && <SettingsModal lang={lang} dict={dict.settings} auth={dict.auth} user={user} close={() => setSettings(false)} />}
+              {settings && <SettingsModal lang={lang} dict={dict.settings} auth={dict.auth} user={user} isAdmin={role === "admin"} close={() => setSettings(false)} />}
             </div>
           ) : (
             !loading && <Link className="login-button" href={loginHref(lang, pathname)}>{nav.login}</Link>
