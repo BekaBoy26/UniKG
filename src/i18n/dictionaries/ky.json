@@ -106,6 +106,8 @@
     "programsKicker": "Программалар",
     "programsTitle": "Окуу багыттары",
     "noPrograms": "Программалардын тизмеси азырынча кошула элек.",
+    "showMorePrograms": "Дагы {n} көрсөтүү",
+    "showLessPrograms": "Жыйыштыруу",
     "admissionKicker": "Тапшыруу",
     "admissionTitle": "Абитуриенттер үчүн маалымат",
     "checkTitle": "Учурдагы талаптарды текшериңиз",

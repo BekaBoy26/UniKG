@@ -106,6 +106,8 @@
     "programsKicker": "Программы",
     "programsTitle": "Направления обучения",
     "noPrograms": "Список программ пока не добавлен.",
+    "showMorePrograms": "Показать ещё {n}",
+    "showLessPrograms": "Свернуть",
     "admissionKicker": "Поступление",
     "admissionTitle": "Информация для абитуриентов",
     "checkTitle": "Проверьте актуальные требования",

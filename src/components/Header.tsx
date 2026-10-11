@@ -53,6 +53,12 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
               <Icon name="grid" size={16} /> <span className="nav-admin-text">{nav.admin}</span>
             </Link>
           )}
+          {/* На телефоне аватара в шапке нет — настройки открываются из меню */}
+          {user && (
+            <button type="button" className="nav-link nav-settings" onClick={() => { setMenu(false); setSettings(true); }} {...{ [SETTINGS_TOGGLE]: "" }}>
+              <Icon name="gear" size={16} /> {dict.settings.title}
+            </button>
+          )}
         </nav>
         <div className="nav-actions">
           <AIButton lang={lang} className="ai-button" label={nav.ai}><Icon name="spark" size={17} /> {nav.ai}</AIButton>
@@ -72,7 +78,10 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
           ) : (
             !loading && <Link className="login-button" href={loginHref(lang, pathname)}>{nav.login}</Link>
           )}
-          <button className="icon-button menu-button" onClick={() => setMenu(!menu)} aria-label={nav.openMenu} aria-expanded={menu}><Icon name={menu ? "close" : "menu"} /></button>
+          <button className="icon-button menu-button" onClick={() => setMenu(!menu)} aria-label={nav.openMenu} aria-expanded={menu}>
+            {/* key пересоздаёт иконку — так срабатывает анимация смены «меню ↔ крестик» */}
+            <span className="menu-icon" key={menu ? "close" : "menu"}><Icon name={menu ? "close" : "menu"} /></span>
+          </button>
         </div>
       </div>
     </header>

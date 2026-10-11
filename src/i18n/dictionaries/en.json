@@ -106,6 +106,8 @@
     "programsKicker": "Programs",
     "programsTitle": "Fields of study",
     "noPrograms": "The list of programs has not been added yet.",
+    "showMorePrograms": "Show {n} more",
+    "showLessPrograms": "Show less",
     "admissionKicker": "Admission",
     "admissionTitle": "Information for applicants",
     "checkTitle": "Check the current requirements",

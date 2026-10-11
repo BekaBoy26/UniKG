@@ -357,6 +357,31 @@ main { animation: page-in .45s ease both; }
 .site-header { transition: box-shadow .3s ease, border-color .3s ease; }
 .site-header.scrolled { box-shadow: 0 10px 30px rgba(8, 13, 28, .12); }
 
+/* Бургер-меню (телефон): иконка поворачивается при смене, меню выезжает сверху, пункты — лесенкой */
+.menu-icon { display: grid; animation: menu-icon-in .3s var(--ease-out); }
+@keyframes menu-icon-in { from { opacity: 0; transform: rotate(-90deg) scale(.6); } }
+@keyframes menu-drop { from { opacity: 0; transform: translateY(-10px); } }
+@media (max-width: 760px) {
+  .main-nav.open { animation: menu-drop .28s var(--ease-out); }
+  .main-nav.open > * { animation: rise .4s var(--ease-out) backwards; }
+  .main-nav.open > :nth-child(2) { animation-delay: .04s; }
+  .main-nav.open > :nth-child(3) { animation-delay: .08s; }
+  .main-nav.open > :nth-child(4) { animation-delay: .12s; }
+  .main-nav.open > :nth-child(5) { animation-delay: .16s; }
+}
+
+/* Программы: на телефоне видны первые 10, остальные — по кнопке «Показать ещё» */
+.program-more { display: none; width: 100%; margin-top: 12px; height: 48px; align-items: center; justify-content: center; gap: 8px; border: 1px dashed color-mix(in srgb, var(--primary) 40%, var(--line)); border-radius: 11px; background: transparent; color: var(--primary); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background-color .2s ease, transform .16s var(--ease-out); }
+.program-more:hover { background: var(--primary-soft); }
+.program-more:active { transform: scale(.98); }
+.program-more svg { transform: rotate(90deg); transition: transform .3s var(--ease-out); }
+.program-more.open svg { transform: rotate(-90deg); }
+@media (max-width: 760px) {
+  .program-grid:not(.expanded) > div:nth-child(n + 11) { display: none; }
+  .program-grid.expanded > div:nth-child(n + 11) { animation: rise .45s var(--ease-out) backwards; animation-delay: calc(var(--n, 0) * 30ms); }
+  .program-more { display: flex; }
+}
+
 /* «О нас»: первый экран появляется по очереди, обложка — с лёгким приближением */
 .about-hero > * { animation: rise .8s var(--ease-out) backwards; }
 .about-hero > :nth-child(2) { animation-delay: .08s; }
@@ -409,7 +434,7 @@ main { animation: page-in .45s ease both; }
 
 /* ===== Админ-панель ===== */
 .admin-shell { min-height: 100vh; display: grid; grid-template-columns: 264px minmax(0, 1fr); }
-.admin-sidebar { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; background: var(--surface); border-right: 1px solid var(--line); }
+.admin-sidebar { position: sticky; z-index: 20; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; background: var(--surface); border-right: 1px solid var(--line); }
 .admin-brand { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 6px; }
 .admin-badge { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); background: var(--primary-soft); padding: 5px 8px; border-radius: 7px; }
 .admin-nav { display: grid; gap: 4px; }
@@ -614,5 +639,10 @@ a.admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow); bor
   .scroll-top { right: 18px; bottom: 18px; width: 46px; height: 46px; border-radius: 14px; }
 }
 
-/* На телефоне в шапке только аватар (общее правило .account-text выше перебивало мобильное) */
-@media (max-width: 760px) { .account-text { display: none; } .account-button { padding: 3px; } }
+/* Пункт «Настройки» в меню — только на телефоне; там же аватар из шапки убран (в шапке — ИИ и бургер).
+   Окно настроек остаётся в .settings-anchor, на телефоне оно position: fixed, поэтому скрыта только кнопка */
+.nav-settings { display: none; }
+@media (max-width: 760px) {
+  .account-button { display: none; }
+  .nav-settings { display: flex; align-items: center; gap: 8px; width: 100%; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
+}

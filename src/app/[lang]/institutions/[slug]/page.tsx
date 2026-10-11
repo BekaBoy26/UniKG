@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { AIButton } from "@/components/AIButton";
 import { Comments } from "@/components/Comments";
 import { Icon } from "@/components/Icon";
+import { ProgramGrid } from "@/components/ProgramGrid";
 import { getI18n } from "@/i18n/dictionaries";
 import { formatSom } from "@/lib/format";
 import { t } from "@/lib/institutions";
@@ -89,9 +90,7 @@ async function InstitutionDetails({ params }: { params: Params }) {
             <span className="section-kicker">{d.programsKicker}</span>
             <h2>{d.programsTitle}</h2>
             {item.programs.length ? (
-              <div className="program-grid">
-                {item.programs.map((p, i) => <div key={i}><span>{String(i + 1).padStart(2, "0")}</span>{t(p, lang)}</div>)}
-              </div>
+              <ProgramGrid programs={item.programs.map((p) => t(p, lang))} showMore={d.showMorePrograms} showLess={d.showLessPrograms} />
             ) : <p>{d.noPrograms}</p>}
           </section>
           <section className="profile-section admission">
