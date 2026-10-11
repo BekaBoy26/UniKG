@@ -48,6 +48,12 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
           {links.map(([path, label]) => (
             <Link key={path} href={`/${lang}${path}`} className={isActive(path) ? "nav-link active" : "nav-link"} onClick={() => setMenu(false)}>{label}</Link>
           ))}
+          {/* Видна только админу; доступ к данным всё равно проверяет бэкенд */}
+          {role === "admin" && (
+            <Link href={`/${lang}/admin`} className="nav-link nav-admin" onClick={() => setMenu(false)} title={nav.admin} aria-label={nav.admin}>
+              <Icon name="grid" size={16} /> <span className="nav-admin-text">{nav.admin}</span>
+            </Link>
+          )}
         </nav>
         <div className="nav-actions">
           <AIButton lang={lang} className="ai-button" label={nav.ai}><Icon name="spark" size={17} /> {nav.ai}</AIButton>

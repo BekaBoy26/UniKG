@@ -13,7 +13,8 @@
     "openMenu": "Открыть меню",
     "toHome": "UniKG, на главную",
     "login": "Войти",
-    "account": "Аккаунт"
+    "account": "Аккаунт",
+    "admin": "Админка"
   },
   "common": {
     "university": "Университет",

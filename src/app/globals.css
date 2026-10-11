@@ -53,6 +53,11 @@ img { display: block; width: 100%; }
 .nav-link:after { content: ""; position: absolute; bottom: 17px; left: 0; right: 0; height: 2px; border-radius: 2px; background: var(--primary); opacity: 0; transform: scaleX(0); transform-origin: center; transition: transform .4s var(--ease-out), opacity .3s ease; }
 .nav-link:hover:after { opacity: .45; transform: scaleX(.55); }
 .nav-link.active:after { opacity: 1; transform: scaleX(1); }
+.nav-admin { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); }
+.nav-admin:hover { color: var(--primary-dark); }
+.main-nav .nav-link { white-space: nowrap; }
+/* На средних экранах в шапке тесно — у ссылки на админку остаётся только иконка */
+@media (min-width: 761px) and (max-width: 1240px) { .nav-admin-text { display: none; } }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .ai-button, .primary-button, .secondary-button, .light-button, .outline-light { border: 0; border-radius: 12px; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 20px; font-size: 16px; font-weight: 700; transition: .2s ease; }
 .ai-button, .primary-button { color: white; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 25%, transparent); }
@@ -557,3 +562,6 @@ a.admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow); bor
   .admin-row-actions { justify-content: flex-start; }
   .scroll-top { right: 18px; bottom: 18px; width: 46px; height: 46px; border-radius: 14px; }
 }
+
+/* На телефоне в шапке только аватар (общее правило .account-text выше перебивало мобильное) */
+@media (max-width: 760px) { .account-text { display: none; } .account-button { padding: 3px; } }

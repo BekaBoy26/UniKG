@@ -13,7 +13,8 @@
     "openMenu": "Open menu",
     "toHome": "UniKG, go to home page",
     "login": "Sign in",
-    "account": "Account"
+    "account": "Account",
+    "admin": "Admin"
   },
   "common": {
     "university": "University",
