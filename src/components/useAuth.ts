@@ -1,21 +1,15 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { accessToken, supabaseBrowser } from "@/lib/supabase/client";
+import { accessToken } from "@/lib/supabase/client";
+import { AuthContext } from "./AuthProvider";
 
-/** Текущий пользователь Supabase Auth (обновляется при входе/выходе) */
+/** Текущий пользователь Supabase Auth (обновляется при входе/выходе). Подписка одна — в AuthProvider (layout) */
 export function useAuth() {
-  const [state, setState] = useState<{ user: User | null; loading: boolean }>({ user: null, loading: true });
-
-  useEffect(() => {
-    const auth = supabaseBrowser().auth;
-    auth.getSession().then(({ data }) => setState({ user: data.session?.user ?? null, loading: false }));
-    const { data } = auth.onAuthStateChange((_event, session) => setState({ user: session?.user ?? null, loading: false }));
-    return () => data.subscription.unsubscribe();
-  }, []);
-
+  const state = useContext(AuthContext);
+  if (!state) throw new Error("useAuth() must be used inside <AuthProvider>");
   return state;
 }
 

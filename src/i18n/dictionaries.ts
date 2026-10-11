@@ -12,7 +12,7 @@ const dictionaries = {
 export type Dictionary = Awaited<ReturnType<typeof dictionaries.ru>>;
 
 /** Current locale from the root `[lang]` segment; 404 for unknown locales. */
-export async function getLocale(): Promise<Locale> {
+async function getLocale(): Promise<Locale> {
   const value = await lang();
   if (!hasLocale(value)) notFound();
   return value;

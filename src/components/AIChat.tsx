@@ -70,7 +70,9 @@ function ChatDrawer({ lang, dict }: Props) {
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) return toLogin();
       const rateLimited = e instanceof ApiError && e.status === 429;
-      setMessages((m) => [...m, { from: "ai", text: rateLimited ? dict.rateLimited : dict.error, error: true }]);
+      // Дневной лимит бэкенд отличает текстом ошибки (минутный — «Too many requests»)
+      const daily = rateLimited && e.message === "Daily AI limit reached";
+      setMessages((m) => [...m, { from: "ai", text: daily ? dict.dailyLimit : rateLimited ? dict.rateLimited : dict.error, error: true }]);
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { AIButton } from "@/components/AIButton";
 import { Icon, type IconName } from "@/components/Icon";
-import { ScrollReveal } from "@/components/ScrollReveal";
 import { getI18n } from "@/i18n/dictionaries";
 
 const bishkekImage = "https://images.unsplash.com/photo-1690269788335-81ed655aaef2?auto=format&fit=crop&w=1200&q=85";
@@ -34,7 +33,7 @@ export default async function AboutPage() {
           <div data-reveal="up" style={delay(250)}><span>{a.missionKicker}</span><strong>{a.mission}</strong></div>
         </div>
       </section>
-      {/* Ниже первого экрана блоки проявляются по ходу прокрутки (ScrollReveal) */}
+      {/* Ниже первого экрана блоки проявляются по ходу прокрутки (ScrollReveal в layout) */}
       <section className="problem-section">
         <div data-reveal="left">
           <span className="section-kicker">{a.whyKicker}</span>
@@ -57,7 +56,6 @@ export default async function AboutPage() {
           <AIButton lang={lang} className="outline-light"><Icon name="spark" size={17} /> {a.askAi}</AIButton>
         </div>
       </section>
-      <ScrollReveal />
     </main>
   );
 }

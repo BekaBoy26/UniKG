@@ -82,31 +82,31 @@ async function InstitutionDetails({ params }: { params: Params }) {
       </section>
       <div className="profile-layout">
         <div className="profile-main">
-          <section className="profile-section">
+          <section data-reveal="up" className="profile-section">
             <span className="section-kicker">{university ? d.aboutUniversity : d.aboutCollege}</span>
             {item.description && <p>{t(item.description, lang)}</p>}
             <div className="fact-row">{facts.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
           </section>
-          <section className="profile-section">
+          <section data-reveal="up" className="profile-section">
             <span className="section-kicker">{d.programsKicker}</span>
             <h2>{d.programsTitle}</h2>
             {item.programs.length ? (
               <ProgramGrid programs={item.programs.map((p) => t(p, lang))} showMore={d.showMorePrograms} showLess={d.showLessPrograms} />
             ) : <p>{d.noPrograms}</p>}
           </section>
-          <section className="profile-section admission">
+          <section data-reveal="up" className="profile-section admission">
             <span className="section-kicker">{d.admissionKicker}</span>
             <h2>{d.admissionTitle}</h2>
             <div className="info-notice"><Icon name="spark" /><p><strong>{d.checkTitle}</strong>{d.checkText}</p></div>
             <ul>{[d.step1, d.step2, d.step3].map((s) => <li key={s}><Icon name="check" />{s}</li>)}</ul>
           </section>
-          <section className="profile-section discussion">
+          <section data-reveal="up" className="profile-section discussion">
             <div className="discussion-title"><div><span className="section-kicker">{d.discussionKicker}</span><h2>{d.discussionTitle}</h2></div></div>
             <div className="opinion-note">{d.opinionNote}</div>
             <Comments slug={item.slug} institutionId={item.id} lang={lang} dict={d} />
           </section>
         </div>
-        <aside className="contact-card">
+        <aside className="contact-card" data-reveal="up">
           <h3>{d.contacts}</h3>
           {item.website && <p><span>{d.website}</span><a href={item.website} target="_blank" rel="noreferrer">{new URL(item.website).host} <Icon name="external" size={15} /></a></p>}
           <p><span>{d.city}</span><strong>{city}</strong></p>

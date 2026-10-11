@@ -1,5 +1,5 @@
 export type Theme = "light" | "dark" | "system";
-export const THEME_KEY = "theme";
+const THEME_KEY = "theme";
 
 /** Runs inline in <head> before first paint to avoid a theme flash. */
 export const themeScript = `(function(){try{var t=localStorage.getItem("${THEME_KEY}")||"light";var d=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;

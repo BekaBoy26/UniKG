@@ -4,9 +4,9 @@ import type { Locale } from "@/i18n/config";
 // Описывают то, как UniKG устроен на самом деле: Supabase (вход и данные), Google (вход и AI на Gemini),
 // хостинг Vercel и Render, cookie только для языка и сессии, без рекламных и аналитических трекеров.
 
-export type LegalSection = { h: string; p?: string[]; list?: string[] };
-export type LegalDoc = { title: string; lead: string; sections: LegalSection[] };
-export type Faq = { title: string; lead: string; items: { q: string; a: string }[] };
+type LegalSection = { h: string; p?: string[]; list?: string[] };
+type LegalDoc = { title: string; lead: string; sections: LegalSection[] };
+type Faq = { title: string; lead: string; items: { q: string; a: string }[] };
 
 type Content = {
   updated: string;

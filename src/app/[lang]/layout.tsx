@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { AIChat } from "@/components/AIChat";
 import { Footer } from "@/components/Footer";
+import { AuthProvider } from "@/components/AuthProvider";
 import { FavoritesSync } from "@/components/favorites";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { Header } from "@/components/Header";
 import { themeScript } from "@/components/theme";
 import { locales } from "@/i18n/config";
@@ -35,16 +37,19 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <div className="app-shell">
-          <Header lang={lang} dict={{ nav: dict.nav, settings: dict.settings, auth: dict.auth }} />
-          <FavoritesSync />
-          {children}
-          <Footer lang={lang} dict={{ nav: dict.nav, footer: dict.footer }} />
-        </div>
-        {/* Панель AI читает ?ai=1 из адреса — это делается в браузере */}
-        <Suspense>
-          <AIChat lang={lang} dict={dict.ai} />
-        </Suspense>
+        <AuthProvider>
+          <div className="app-shell">
+            <Header lang={lang} dict={{ nav: dict.nav, settings: dict.settings, auth: dict.auth }} />
+            <FavoritesSync />
+            {children}
+            <Footer lang={lang} dict={{ nav: dict.nav, footer: dict.footer }} />
+          </div>
+          {/* Панель AI читает ?ai=1 из адреса — это делается в браузере */}
+          <Suspense>
+            <AIChat lang={lang} dict={dict.ai} />
+          </Suspense>
+          <ScrollReveal />
+        </AuthProvider>
       </body>
     </html>
   );

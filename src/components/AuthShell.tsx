@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { Icon } from "./Icon";
-import { AuthLanguages } from "./AuthLanguages";
+import { LanguageButtons } from "./LanguageButtons";
 
 /** Экран входа/регистрации: слева — бренд и преимущества, справа — форма. Без шапки и подвала сайта */
 export function AuthShell({ lang, dict, children }: { lang: Locale; dict: Dictionary["auth"]; children: ReactNode }) {
@@ -27,7 +27,7 @@ export function AuthShell({ lang, dict, children }: { lang: Locale; dict: Dictio
       <section className="auth-panel">
         <div className="auth-form-wrap">
           {children}
-          <AuthLanguages lang={lang} />
+          <LanguageButtons lang={lang} className="auth-languages" />
         </div>
       </section>
     </main>

@@ -61,7 +61,7 @@ export default async function HomePage() {
           <div className="dots-decoration" />
         </div>
       </section>
-      <section className="quick-search">
+      <section className="quick-search" data-reveal="up">
         <div className="quick-icon"><Icon name="search" /></div>
         <div><span>{home.whatToStudy}</span><strong>{home.whatToStudyHint}</strong></div>
         <div className="quick-divider" />
@@ -70,7 +70,7 @@ export default async function HomePage() {
       </section>
       {row("university")}
       {row("college")}
-      <section className="advisor-banner">
+      <section className="advisor-banner" data-reveal="zoom">
         <div className="advisor-icon"><Icon name="bot" size={30} /></div>
         <div><span className="section-kicker">{home.advisorKicker}</span><h2>{home.advisorTitle}</h2><p>{home.advisorText}</p></div>
         <AIButton lang={lang} className="light-button">{home.advisorButton} <Icon name="arrow" /></AIButton>

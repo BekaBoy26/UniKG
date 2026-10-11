@@ -22,8 +22,6 @@
     "college": "College",
     "more": "Learn more",
     "seeAll": "See all",
-    "back": "Back",
-    "forward": "Forward",
     "state": "Public",
     "private": "Private",
     "kyrgyzstan": "Kyrgyzstan",
@@ -63,8 +61,7 @@
     "advisorKicker": "Not sure where to start?",
     "advisorTitle": "Talk to UniKG AI",
     "advisorText": "Tell us about your interests, city and budget — the assistant will suggest options worth exploring.",
-    "advisorButton": "Start a chat",
-    "noColleges": "Colleges will appear in the catalog soon."
+    "advisorButton": "Start a chat"
   },
   "directory": {
     "kicker": "Institution catalog",
@@ -126,7 +123,6 @@
     "step3": "Prepare the documents from the institution's list",
     "discussionKicker": "Comments",
     "discussionTitle": "Student opinions",
-    "newComment": "New comment",
     "opinionNote": "Comments reflect users' personal experience and are not an official assessment or ranking.",
     "noComments": "No comments yet. Be the first to share your experience.",
     "commentPlaceholder": "Share your opinion...",
@@ -172,7 +168,8 @@
     "disclaimer": "AI can make mistakes. Check admission requirements on official websites.",
     "error": "Could not get a reply. Please try again a bit later.",
     "rateLimited": "Too many requests. Please wait a minute and try again.",
-    "mentioned": "Mentioned institutions"
+    "mentioned": "Mentioned institutions",
+    "dailyLimit": "You have reached today’s limit of messages to the AI assistant. Please try again tomorrow."
   },
   "about": {
     "eyebrow": "About the platform",
@@ -212,10 +209,7 @@
   },
   "footer": {
     "tagline": "Find your path to education.",
-    "platform": "Platform",
-    "language": "Language",
     "rights": "© 2026 UniKG. Education navigation.",
-    "search": "Search",
     "catalog": "Catalog",
     "sources": "Data sources",
     "privacy": "Privacy",
@@ -233,7 +227,6 @@
     "title": "Sign in to UniKG",
     "text": "Sign in to use the AI assistant and settings and to leave comments. The catalog and institution pages are available without signing in.",
     "google": "Continue with Google",
-    "redirecting": "Redirecting to Google…",
     "error": "Sign-in failed. Please try again.",
     "privacy": "We only receive your name and email from Google.",
     "signedInAs": "Signed in as",
@@ -350,7 +343,6 @@
     "popularity": "Catalog order",
     "popularityHint": "1 — first place. Empty — after the others, by name",
     "programs": "Programs",
-    "programsHint": "One program per line. Lines in different languages are matched by line number.",
     "website": "Website",
     "address": "Address",
     "sources": "Data sources",

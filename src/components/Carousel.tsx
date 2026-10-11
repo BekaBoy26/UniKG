@@ -16,7 +16,7 @@ type Props = {
 /** Подборка на главной: несколько карточек и плитка «Смотреть все» в конце ряда */
 export function Carousel({ kicker, title, text, seeAllHref, total, labels, children }: Props) {
   return (
-    <section className="content-section">
+    <section className="content-section" data-reveal="up">
       <div className="section-kicker">{kicker}</div>
       <div className="section-heading">
         <div><h2>{title}</h2><p>{text}</p></div>

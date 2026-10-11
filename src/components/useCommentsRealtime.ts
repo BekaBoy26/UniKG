@@ -4,7 +4,7 @@ import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { useEffect, useEffectEvent } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
-export type CommentChange = RealtimePostgresChangesPayload<{ id: string; institution_id: string }>;
+type CommentChange = RealtimePostgresChangesPayload<{ id: string; institution_id: string }>;
 
 /**
  * Живые обновления комментариев: Supabase Realtime (WebSocket) на таблицу comments.

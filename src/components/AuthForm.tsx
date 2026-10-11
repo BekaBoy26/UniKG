@@ -10,7 +10,7 @@ import { safeNext } from "@/lib/supabase/safe-next";
 import { Icon } from "./Icon";
 import { useAuth } from "./useAuth";
 
-export type AuthMode = "login" | "register" | "forgot" | "reset";
+type AuthMode = "login" | "register" | "forgot" | "reset";
 type Props = { lang: Locale; dict: Dictionary["auth"]; mode: AuthMode };
 
 const MIN_PASSWORD = 8;
