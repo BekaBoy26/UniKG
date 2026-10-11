@@ -110,7 +110,10 @@ export function AuthForm({ lang, dict, mode }: Props) {
   const google = async () => {
     setPending(true);
     setError("");
-    const { error } = await supabaseBrowser().auth.signInWithOAuth({
+    const auth = supabaseBrowser().auth;
+    // Новый вход всегда заменяет прежний аккаунт: убираем старую сессию и оставшиеся PKCE-ключи
+    await auth.signOut({ scope: "local" });
+    const { error } = await auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: callback(next), queryParams: { prompt: "select_account" } },
     });

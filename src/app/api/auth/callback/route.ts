@@ -23,18 +23,22 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return response;
     console.error("OAuth callback error:", error.message);
+    // Вход в новый аккаунт не удался — прежнюю сессию не оставляем,
+    // иначе пользователь молча остаётся в старом аккаунте
+    await supabase.auth.signOut({ scope: "local" });
   } else {
     console.error("OAuth callback without code:", searchParams.get("error_description") ?? searchParams.get("error"));
+    // Повторный заход на колбэк без кода (кнопка «назад») — уже вошедшего ведём дальше
+    const { data } = await supabase.auth.getUser();
+    if (data.user) return response;
   }
-
-  // Код не обменялся (уже использован, повторный запрос колбэка, нет PKCE-ключа), но пользователь
-  // уже вошёл — ведём дальше, а не на страницу ошибки
-  const { data } = await supabase.auth.getUser();
-  if (data.user) return response;
 
   const lang = next.split("/")[1];
   const login = new URL(`/${hasLocale(lang) ? lang : defaultLocale}/login`, origin);
   login.searchParams.set("error", "1");
   login.searchParams.set("next", next);
-  return NextResponse.redirect(login);
+  const failure = NextResponse.redirect(login);
+  // Куки, которые записал signOut (удаление сессии и PKCE-ключей), переносим в редирект на вход
+  response.cookies.getAll().forEach((cookie) => failure.cookies.set(cookie));
+  return failure;
 }
