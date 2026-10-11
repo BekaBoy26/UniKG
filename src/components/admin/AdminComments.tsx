@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { adminApi, fill, type AdminComment } from "@/lib/admin";
 import { Icon } from "../Icon";
+import { useCommentsRealtime } from "../useCommentsRealtime";
 import { AdminTitle } from "./AdminOverview";
 import { useAdminReady } from "./AdminShell";
 
@@ -26,6 +27,20 @@ export function AdminComments({ lang, dict }: { lang: Locale; dict: Dictionary["
       active = false;
     };
   }, [ready]);
+
+  // Новые и удалённые комментарии со всего сайта — без перезагрузки страницы
+  useCommentsRealtime(
+    (change) => {
+      if (change.eventType === "DELETE") {
+        setItems((list) => list?.filter((c) => c.id !== change.old.id) ?? null);
+        return;
+      }
+      adminApi<AdminComment[]>("/comments?limit=500")
+        .then(setItems)
+        .catch(() => undefined);
+    },
+    { enabled: ready },
+  );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();

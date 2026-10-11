@@ -36,7 +36,6 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
 
   const avatar = user?.user_metadata?.avatar_url as string | undefined;
   const name = user ? displayName(user) : "";
-  const email = user?.email && user.email !== name ? user.email : null;
 
   if (isAuthPath(pathname) || isAdminPath(pathname)) return null;
 
@@ -65,7 +64,8 @@ export function Header({ lang, dict }: { lang: Locale; dict: Pick<Dictionary, "n
                   {/* eslint-disable-next-line @next/next/no-img-element -- аватар Google, внешний домен */}
                   {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : name.slice(0, 1).toUpperCase()}
                 </span>
-                <span className="account-text"><strong>{name}</strong>{email && <small>{email}</small>}</span>
+                {/* Почта видна в самих настройках */}
+                <span className="account-text"><strong>{name}</strong></span>
               </button>
               {settings && <SettingsModal lang={lang} dict={dict.settings} auth={dict.auth} user={user} isAdmin={role === "admin"} close={() => setSettings(false)} />}
             </div>

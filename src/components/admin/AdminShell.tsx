@@ -89,7 +89,7 @@ export function AdminShell({ lang, dict, settings, auth, toHome, account, childr
                   {/* eslint-disable-next-line @next/next/no-img-element -- аватар Google, внешний домен */}
                   {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : name.slice(0, 1).toUpperCase()}
                 </span>
-                <span><strong>{name}</strong>{user.email && user.email !== name && <small>{user.email}</small>}</span>
+                <span><strong>{name}</strong></span>
               </button>
               {/* Ссылка «Админ-панель» здесь не нужна — мы уже в ней */}
               {settingsOpen && <SettingsModal lang={lang} dict={settings} auth={auth} user={user} isAdmin={false} close={() => setSettingsOpen(false)} />}

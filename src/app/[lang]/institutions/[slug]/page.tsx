@@ -103,7 +103,7 @@ async function InstitutionDetails({ params }: { params: Params }) {
           <section className="profile-section discussion">
             <div className="discussion-title"><div><span className="section-kicker">{d.discussionKicker}</span><h2>{d.discussionTitle}</h2></div></div>
             <div className="opinion-note">{d.opinionNote}</div>
-            <Comments slug={item.slug} lang={lang} dict={d} />
+            <Comments slug={item.slug} institutionId={item.id} lang={lang} dict={d} />
           </section>
         </div>
         <aside className="contact-card">

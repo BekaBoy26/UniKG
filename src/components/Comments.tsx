@@ -9,6 +9,7 @@ import { api } from "@/lib/api";
 import { accessToken } from "@/lib/supabase/client";
 import { Icon } from "./Icon";
 import { loginHref, useAuth } from "./useAuth";
+import { useCommentsRealtime } from "./useCommentsRealtime";
 
 type Comment = { id: string; body: string; created_at: string; canDelete: boolean; author: { display_name: string | null } | null };
 type Labels = Pick<
@@ -18,8 +19,8 @@ type Labels = Pick<
 
 const initials = (name: string) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
-/** Комментарии публикуются сразу; удалить может автор или админ (признак canDelete считает сервер) */
-export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dict: Labels }) {
+/** Комментарии публикуются сразу; удалить может автор или админ (признак canDelete считает сервер). Новые — снизу, приходят в реальном времени */
+export function Comments({ slug, institutionId, lang, dict }: { slug: string; institutionId: string; lang: Locale; dict: Labels }) {
   const { user, loading: authLoading } = useAuth();
   const pathname = usePathname();
   const [comments, setComments] = useState<Comment[] | null>(null);
@@ -38,13 +39,29 @@ export function Comments({ slug, lang, dict }: { slug: string; lang: Locale; dic
       .catch(() => setLoadError(true));
   }, [path, authLoading, user?.id]);
 
+  // Чужие комментарии появляются без перезагрузки: новый или изменённый — берём свежий список, удалённый — убираем
+  useCommentsRealtime(
+    (change) => {
+      if (change.eventType === "DELETE") {
+        setComments((list) => list?.filter((c) => c.id !== change.old.id) ?? null);
+        return;
+      }
+      accessToken()
+        .then((token) => api<Comment[]>(path, { token }))
+        .then(setComments)
+        .catch(() => undefined);
+    },
+    { institutionId, enabled: !authLoading },
+  );
+
   const submit = async () => {
     if (!text.trim() || sending) return;
     setSending(true);
     setError(false);
     try {
       const created = await api<Comment>(path, { method: "POST", token: await accessToken(), body: JSON.stringify({ body: text.trim() }) });
-      setComments((list) => [created, ...(list ?? [])]);
+      // Realtime мог уже подтянуть этот комментарий — не дублируем
+      setComments((list) => (list?.some((c) => c.id === created.id) ? list : [...(list ?? []), created]));
       setText("");
     } catch {
       setError(true);

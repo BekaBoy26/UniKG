@@ -41,7 +41,8 @@ button, a, select { cursor: pointer; }
 button { color: inherit; }
 a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; }
-.app-shell { min-height: 100vh; overflow: hidden; }
+/* clip, а не hidden: hidden делает .app-shell контейнером прокрутки и ломает sticky-шапку */
+.app-shell { min-height: 100vh; overflow: clip; }
 .site-header { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--surface) 88%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent); backdrop-filter: blur(16px); }
 .nav-wrap { max-width: 1280px; height: 76px; margin: auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
 .logo { border: 0; background: transparent; display: flex; align-items: center; gap: 10px; padding: 0; font-weight: 800; font-size: 21px; letter-spacing: -0.3px; }
@@ -372,8 +373,6 @@ main { animation: page-in .45s ease both; }
 .scroll-top.visible:active { transform: scale(.94); }
 
 /* ===== Админ-панель ===== */
-/* overflow: clip вместо hidden — иначе не работают sticky-панели админки */
-.app-shell:has(> .admin-shell) { overflow: clip; }
 .admin-shell { min-height: 100vh; display: grid; grid-template-columns: 264px minmax(0, 1fr); }
 .admin-sidebar { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; background: var(--surface); border-right: 1px solid var(--line); }
 .admin-brand { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 6px; }
@@ -391,9 +390,8 @@ main { animation: page-in .45s ease both; }
 .admin-settings .settings-popover { top: auto; bottom: calc(100% + 10px); left: 0; right: auto; max-height: calc(100vh - 170px); transform-origin: bottom left; animation-name: popover-up; }
 @keyframes popover-up { from { opacity: 0; transform: translateY(6px) scale(.98); } }
 .admin-user > span:last-child { min-width: 0; }
-.admin-user strong, .admin-user small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-user strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-user strong { font-size: 14px; }
-.admin-user small { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .admin-to-site { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 11px; color: var(--muted); font-size: 14px; font-weight: 650; transition: background-color .2s ease, color .2s ease; }
 .admin-to-site:hover { background: var(--primary-soft); color: var(--primary); }
 .admin-main { width: 100%; max-width: 1240px; padding: 36px 40px 80px; }

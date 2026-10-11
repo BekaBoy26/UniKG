@@ -7,6 +7,7 @@ export type InstitutionType = "university" | "college";
 export type Ownership = "state" | "private";
 
 export type Institution = {
+  id: string;
   slug: string;
   type: InstitutionType;
   short: string;
